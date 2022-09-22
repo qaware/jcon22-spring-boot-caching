@@ -3,3 +3,9 @@ spring:
     type: "redis"
   redis:
     timeout: 20ms
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'

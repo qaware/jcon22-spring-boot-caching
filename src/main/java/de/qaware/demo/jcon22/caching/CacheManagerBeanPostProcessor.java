@@ -24,6 +24,7 @@ import java.util.function.Supplier;
 public class CacheManagerBeanPostProcessor implements BeanPostProcessor, InitializingBean {
 
     private final ObjectFactory<CachingConfigurer> cachingConfigurerSupplier;
+    private final ObjectFactory<CacheMetricsDecoratorFactory> cacheMetricsDecoratorFactorySupplier;
     private Supplier<CacheErrorHandler> cacheErrorHandlerSupplier;
 
     @Override
@@ -40,7 +41,7 @@ public class CacheManagerBeanPostProcessor implements BeanPostProcessor, Initial
     }
 
     @RequiredArgsConstructor
-    private static class DecoratingCacheManager implements CacheManager {
+    private class DecoratingCacheManager implements CacheManager {
         private final CacheManager delegate;
         private final CacheErrorHandler cacheErrorHandler;
         private final ConcurrentHashMap<String, Cache> decoratedCaches = new ConcurrentHashMap<>();
@@ -65,7 +66,7 @@ public class CacheManagerBeanPostProcessor implements BeanPostProcessor, Initial
             var factory = new AspectJProxyFactory(targetCache);
             factory.addAspect(new CacheTransactionAwareAspect(cacheErrorHandler, targetCache));
             factory.addAspect(CacheCircuitBreakerAspect.class);
-            return factory.getProxy();
+            return cacheMetricsDecoratorFactorySupplier.getObject().decorateCache(factory.getProxy());
         }
     }
 
