@@ -29,6 +29,7 @@ public class HelloController {
         sb.append("\n\n--> Calling repository took ");
         sb.append(stopWatch.getTotalTimeMillis());
         sb.append(" ms");
+        appendCircuitBreakerState(sb);
         return sb.toString();
     }
 
@@ -48,7 +49,14 @@ public class HelloController {
         sb.append(" times took ");
         sb.append(stopWatch.getTotalTimeMillis());
         sb.append(" ms");
+        appendCircuitBreakerState(sb);
         return sb.toString();
+    }
+
+    private void appendCircuitBreakerState(StringBuilder sb) {
+        sb.append('\n')
+                .append("Circuit breaker is ")
+                .append(CacheCircuitBreakerAspect.CACHE_CIRCUIT_BREAKER.getState());
     }
 
 }
