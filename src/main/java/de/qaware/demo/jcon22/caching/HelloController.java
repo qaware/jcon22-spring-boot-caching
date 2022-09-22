@@ -4,6 +4,7 @@ package de.qaware.demo.jcon22.caching;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StopWatch;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +18,7 @@ public class HelloController {
 
     private static final int REPOSITORY_CALLS = 10;
 
+    @Transactional
     @GetMapping(value = "hello", produces = MediaType.TEXT_PLAIN_VALUE)
     public String hello() throws InterruptedException {
         log.info("Calling /hello endpoint");
@@ -33,6 +35,7 @@ public class HelloController {
         return sb.toString();
     }
 
+    @Transactional
     @GetMapping(value = "hello-many", produces = MediaType.TEXT_PLAIN_VALUE)
     public String helloMany() throws InterruptedException {
         log.info("Calling /hello-many endpoint");
