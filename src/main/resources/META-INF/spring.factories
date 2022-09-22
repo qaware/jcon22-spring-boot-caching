@@ -1,0 +1,2 @@
+org.springframework.context.ApplicationContextInitializer=\
+  de.qaware.demo.jcon22.caching.RedisTestContainerConfiguration
