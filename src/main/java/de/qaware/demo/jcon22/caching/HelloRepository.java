@@ -9,10 +9,10 @@ import org.springframework.stereotype.Component;
 public class HelloRepository {
 
     @Cacheable(cacheNames = "hello")
-    public String getHelloResponse() throws InterruptedException {
+    public HelloDto getHelloResponse() throws InterruptedException {
         var sleepInMs = Math.round(10 * Math.random() + 20);
         Thread.sleep(sleepInMs);
         log.info("Repository access took {} ms (because I was sleeping)", sleepInMs);
-        return "Hello from repository";
+        return new HelloDto("Hello from repository");
     }
 }
